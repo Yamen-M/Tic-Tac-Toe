@@ -84,6 +84,7 @@ const gameBoard = (() => {
             const winner = gameFlow.getPlayerTurn();
             alert(`Winner is ${winner.name}!`);
             gameFlow.updateHistory(`${winner.name} won`);
+            gameFlow.updateScores(winner);
             return true;
         }
         return false;
@@ -97,12 +98,23 @@ const Player = (name, marker) => ({ name, marker });
 const gameFlow = (() => {
     let player1, player2, turnFlag = false;
     let history = [];
+    let scores = { player1: 0, player2: 0 };
 
     const getPlayerTurn = () => turnFlag ? player2 : player1;
 
     const forceTurnflag = () => {
         turnFlag = !turnFlag;
         updateCurrentPlayerDisplay();
+    };
+
+    const updateScores = (winner) => {
+        if (winner === player1) {
+            scores.player1++;
+            document.getElementById('player1-score').textContent = scores.player1;
+        } else if (winner === player2) {
+            scores.player2++;
+            document.getElementById('player2-score').textContent = scores.player2;
+        }
     };
 
     const handleCellClick = (index) => {
@@ -117,9 +129,13 @@ const gameFlow = (() => {
     };
 
     const updateCurrentPlayerDisplay = () => {
-        const currentPlayer = getPlayerTurn();
-        document.getElementById('current-player').textContent = `${currentPlayer.name} (${currentPlayer.marker})`;
+    const currentPlayer = getPlayerTurn();
+    const currentPlayerElement = document.getElementById('current-player');
+    if (currentPlayerElement) {
+        currentPlayerElement.textContent = `${currentPlayer.name} (${currentPlayer.marker})`;
+    }
     };
+
 
     const updateHistory = (result) => {
         history.unshift(result);
@@ -143,8 +159,8 @@ const gameFlow = (() => {
         const player1Name = document.getElementById('player1-name').value || 'Player 1';
         const player2Name = document.getElementById('player2-name').value || 'Player 2';
 
-        const player1MarkerButton = document.querySelector('#player1-name').closest('div').querySelector('.marker-choice.selected');
-        const player2MarkerButton = document.querySelector('#player2-name').closest('div').querySelector('.marker-choice.selected');
+        const player1MarkerButton = document.querySelector('#player1-card .marker-choice.selected');
+        const player2MarkerButton = document.querySelector('#player2-card .marker-choice.selected');
 
         if (!player1MarkerButton || !player2MarkerButton) {
             alert("Both players must choose a marker!");
@@ -162,8 +178,10 @@ const gameFlow = (() => {
         player1 = Player(player1Name, player1Marker);
         player2 = Player(player2Name, player2Marker);
 
-        document.getElementById('player1-info').textContent = `Player 1: ${player1.name} (${player1.marker})`;
-        document.getElementById('player2-info').textContent = `Player 2: ${player2.name} (${player2.marker})`;
+        document.getElementById('player1-name-label').textContent = player1.name;
+        document.getElementById('player1-marker').textContent = player1.marker;
+        document.getElementById('player2-name-label').textContent = player2.name;
+        document.getElementById('player2-marker').textContent = player2.marker;
 
         return true;
     };
@@ -182,5 +200,37 @@ const gameFlow = (() => {
 
     setupMarkerButtons();
 
-    return { handleCellClick, forceTurnflag, getPlayerTurn, updateHistory };
+    return { handleCellClick, forceTurnflag, getPlayerTurn, updateHistory, updateScores};
 })();
+
+document.addEventListener('DOMContentLoaded', () => {
+    const inputs = document.querySelectorAll('input[type="text"]');
+    const startButton = document.getElementById('start-game');
+
+    const checkInputs = () => {
+        const player1Name = document.getElementById('player1-name').value.trim();
+        const player2Name = document.getElementById('player2-name').value.trim();
+        const player1Marker = document.querySelector('#player1-card .marker-choice.selected');
+        const player2Marker = document.querySelector('#player2-card .marker-choice.selected');
+
+        if (player1Name && player2Name && player1Marker && player2Marker) {
+            startButton.disabled = false;
+        } else {
+            startButton.disabled = true;
+        }
+    };
+
+    inputs.forEach(input => {
+        input.addEventListener('input', checkInputs);
+    });
+
+    document.querySelectorAll('.marker-choice').forEach(button => {
+        button.addEventListener('click', checkInputs);
+    });
+});
+
+document.getElementById('clear-history').addEventListener('click', () => {
+    const historyList = document.getElementById('history-list');
+    historyList.innerHTML = '';
+    history = [];
+});

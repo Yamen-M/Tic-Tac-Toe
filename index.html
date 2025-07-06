@@ -4,39 +4,153 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic Tac Toe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Tic Tac Toe</h1>
-    <div id="player-setup">
-        <div>
-            <label for="player1-name">Player 1 Name:</label>
-            <input type="text" id="player1-name">
-            <button class="marker-choice" data-marker="X">Choose X</button>
-            <button class="marker-choice" data-marker="O">Choose O</button>
+<div class="container">
+        <header>
+            <h1 class="floating">TIC TAC TOE</h1>
+            <p class="subtitle">The ultimate strategy battle</p>
+        </header>
+
+        <div class="panel setup-panel">
+            <div class="panel-title">
+                <i class="fas fa-user-gear"></i>
+                <h2>Player Setup</h2>
+            </div>
+            
+            <div class="player-setup">
+                <div class="player-card active" id="player1-card">
+                    <div class="player-header">
+                        <div class="player-name">Player 1</div>
+                        <div class="player-id">1</div>
+                    </div>
+                    
+                    <div class="player-input">
+                        <label for="player1-name">NAME</label>
+                        <input type="text" id="player1-name" placeholder="Enter name">
+                    </div>
+                    
+                    <div class="player-input">
+                        <label>MARKER</label>
+                        <div class="marker-choices">
+                            <button class="marker-choice selected" data-marker="X" data-player="1">X</button>
+                            <button class="marker-choice" data-marker="O" data-player="1">O</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="player-card" id="player2-card">
+                    <div class="player-header">
+                        <div class="player-name">Player 2</div>
+                        <div class="player-id">2</div>
+                    </div>
+                    
+                    <div class="player-input">
+                        <label for="player2-name">NAME</label>
+                        <input type="text" id="player2-name" placeholder="Enter name">
+                    </div>
+                    
+                    <div class="player-input">
+                        <label>MARKER</label>
+                        <div class="marker-choices">
+                            <button class="marker-choice" data-marker="X" data-player="2">X</button>
+                            <button class="marker-choice selected" data-marker="O" data-player="2">O</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button id="start-game" disabled>
+                <i class="fas fa-play"></i> START GAME
+            </button>
         </div>
-        <div>
-            <label for="player2-name">Player 2 Name:</label>
-            <input type="text" id="player2-name">
-            <button class="marker-choice" data-marker="X">Choose X</button>
-            <button class="marker-choice" data-marker="O">Choose O</button>
+
+        <div class="panel game-panel">
+            <div class="panel-title">
+                <i class="fas fa-gamepad"></i>
+                <h2>Game Board</h2>
+            </div>
+            
+            <div class="game-info">
+                <div class="current-player">
+                    <span class="current-label">CURRENT PLAYER</span>
+                    <span class="current-value" id="current-player">-</span>
+                </div>
+                
+                <div class="player-status">
+                    <div class="status-item">
+                        <span class="status-name" id="player1-name-label">Player 1</span>
+                        <span class="status-marker" id="player1-marker">X</span>
+                        <span class="status-name">SCORE: <span id="player1-score">0</span></span>
+                    </div>
+                    
+                    <div class="status-item">
+                        <span class="status-name" id="player2-name-label">Player 2</span>
+                        <span class="status-marker" id="player2-marker">O</span>
+                        <span class="status-name">SCORE: <span id="player2-score">0</span></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="game-board" id="game-board"></div>
+            
+            <div class="game-controls">
+                <button id="reset-button">
+                    <i class="fas fa-rotate"></i> RESET GAME
+                </button>
+            </div>
         </div>
-        <button id="start-game">Start Game</button>
+
+        <div class="panel history-panel">
+            <div class="history-header">
+                <div class="panel-title">
+                    <i class="fas fa-history"></i>
+                    <h2>Game History</h2>
+                </div>
+                <div class="history-controls">
+                    <button class="history-btn" id="clear-history">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <ul id="history-list">
+                <li>
+                    <div class="history-result">
+                        <span class="history-winner">Player 1</span> won the game
+                    </div>
+                    <div class="history-mark">
+                        <span class="history-marker X">X</span>
+                        <span class="history-date">Today, 15:30</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="history-result">
+                        <span>Game ended in a draw</span>
+                    </div>
+                    <div class="history-mark">
+                        <span class="history-date">Today, 14:45</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="history-result">
+                        <span class="history-winner">Player 2</span> won the game
+                    </div>
+                    <div class="history-mark">
+                        <span class="history-marker O">O</span>
+                        <span class="history-date">Today, 14:20</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
-    <div id="game-info">
-        <p>Current Player: <span id="current-player">None</span></p>
-        <p><span id="player1-info">Player 1: None (None)</span></p>
-        <p><span id="player2-info">Player 2: None (None)</span></p>
-    </div>
-    <div id="game-board">
-        <!-- The game board will be generated using JavaScript -->
-    </div>
-    <button id="reset-button">Reset Game</button>
-    <div id="game-history">
-        <h2>Game History</h2>
-        <ul id="history-list"></ul>
-    </div>
+
+
+
+    
     <script src="script.js"></script>
 </body>
 </html>
-
