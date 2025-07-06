@@ -27,4 +27,4 @@ A modern, interactive implementation of the classic Tic-Tac-Toe game built as pa
 - **CSS3** — Flexbox, Grid, and modern styling  
 - **JavaScript (ES6+)** —  Module pattern for maintainable architecture, DOM manipulation and event-driven logic, Encapsulated game logic and UI control
 
-Check it out [here](https://yamen-m.github.io/tic-tac-toe/)
+Check it out [here](https://yamen-m.github.io/Tic-Tac-Toe/)
